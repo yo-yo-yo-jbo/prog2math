@@ -21,20 +21,18 @@ This gives us a number between 0 and 1, where `0` is only yielded for the input 
 - `Bigger-than-or-equal-to` is similarly implemented: `a >= b` is just `b <= a`.
 
 ### Integer test
-We could check if an input is an integer very similarly to what we have done before with trigonometry.  
-Given the input `x`, we could use the `cosine` function on $x\pi$ - which yields `-1` and `1` if and only if `x` is an integer, and a number between those otherwise.  
-Therefore, squaring the result gives us a number in the range $\left[0,1\right]$ and yields `1` only when `x` is an integer. We use the `floor` function on the result to make all non-1 numbers yield `0`.  
-Therefore, $x\in\mathbb{Z}$ can be implemented as $\left\lfloor\cos^2\left(\pi x\right)\right\rfloor$.  
-This, in turn, also lets us test if $x\in\mathbb{N}$ (if `x` is a Natural number) by adding that with `x>0` (or `x>=0` if you insist that $0\in\mathbb{N}$).
+- `Integer test` could be done very similarly to what we have done before with trigonometry. Given the input `x`, we could use the `cosine` function on $x\pi$ - which yields `-1` and `1` if and only if `x` is an integer, and a number between those otherwise. Therefore, squaring the result gives us a number in the range $\left[0,1\right]$ and yields `1` only when `x` is an integer. We use the `floor` function on the result to make all non-1 numbers yield `0`. To summarize, $x\in\mathbb{Z}$ can be implemented as $\left\lfloor\cos^2\left(\pi x\right)\right\rfloor$.
+- `Natural number testing` can now be implemented easily: $x\in\mathbb{N}$ (`x` is a Natural number) can be implemented by adding the integer test with `x>0` (or `x>=0` if you insist that $0\in\mathbb{N}$).
 
 ## Mathematical operations
 Obviously the "usual" operations of addition, substruction, multipication, division, square roots and powers are free.  
 However, there are some cool mathematical tricks we could use for our benefit.
 
 ### Divisibility test
-We can check if `a` divides `b` by checking if `a` is non-zero and $\frac{b}{a}$ is an integer.
+- We can check if `a` divides `b` by checking if `a` is non-zero and $\frac{b}{a}$ is an integer.
 
 ### Primality test
-The easiest (yet very inefficient) primality test relies on [Wilson's theorem](https://en.wikipedia.org/wiki/Wilson%27s_theorem), in essence, `n` is prime if `n > 1` and $\frac{\left(n-1\right)!+1}{n}$ is an integer.  
-One more idea would just be iterating all numbers between `2` and `n-1` and performing divisibility tests on all of them, which can be done with summation of $\sum_{k=2}^{n-1}$.  
-Lastly, instead of summation we could use multiplication of $\prod_{k=2}^{n-1}$ and making sure none of them divide `n`.
+- The easiest (yet very inefficient) primality test relies on [Wilson's theorem](https://en.wikipedia.org/wiki/Wilson%27s_theorem), in essence, `n` is prime if `n > 1` and $\frac{\left(n-1\right)!+1}{n}$ is an integer.
+- One more idea would just be iterating all numbers between `2` and `n-1` and performing divisibility tests on all of them, which can be done with summation of $\sum_{k=2}^{n-1}$.
+- Lastly, instead of summation we could use multiplication of $\prod_{k=2}^{n-1}$ and making sure none of them divide `n`.
+- In my code I used the last option (multiplying all divisibility indicators in the range and negating the result).
