@@ -20,3 +20,18 @@ To check if a number `x` is not negative, we could use the absolute value of it 
 This can be implemented by calling the equality test on $\sqrt{x^2}$ and `x`: $1-\left\lceil\frac{4\arctan^2{\left(\sqrt{x^2}-x\right)}}{\pi^2}\right\rceil$.  
 Given that capability, we can implement a `less-than-or-equal-to` test: to check if `a <= b`, we could check non-negativity on `b-a`: $1-\left\lceil\frac{4\arctan^2{\left(\sqrt{\left(b-a\right)^2}-\left(b-a\right)\right)}}{\pi^2}\right\rceil$.  
 Obviously we could perform other things now too by running negations, e.g. `a < b` is equivalent to `not (b <= a)`.
+
+### Integer test
+We could check if an input is an integer very similarly to what we have done before with trigonometry.  
+Given the input `x`, we could use the `cosine` function on $x\pi$ - which yields `-1` and `1` if and only if `x` is an integer, and a number between those otherwise.  
+Therefore, squaring the result gives us a number in the range $\left[0,1\right]$ and yields `1` only when `x` is an integer. We use the `floor` function on the result to make all non-1 numbers yield `0`.  
+Therefore, $x\in\mathbb{Z}$ can be implemented as $\left\lfloor\cos^2\left(\pi x\right)\right\rfloor$.  
+This, in turn, also lets us test if $x\in\mathbb{N}$ (if `x` is a Natural number) by adding that with `x>0` (or `x>=0` if you insist $0\in\mathbb{N}$).
+
+## Mathematical tricks
+There are some cool mathematical tricks we could use for our benefit.
+
+
+
+### Primality test
+The easiest (yet very inefficient) primality test relies on [Wilson's theorem](https://en.wikipedia.org/wiki/Wilson%27s_theorem)
