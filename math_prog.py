@@ -21,7 +21,7 @@ class LatexExpr(object):
         # Return the expression
         return self._expression
 
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         """
             Returns the expression.
         """
@@ -119,7 +119,7 @@ class Indicator(LatexExpr):
         """
 
         # Use the negation of a >= b
-        return Indicator.logical_not(Indicatorless_than_or_equal(b, a))
+        return Indicator.logical_not(Indicator.less_than_or_equal(b, a))
 
     @staticmethod
     def bigger_than_or_equal(a:LatexExpr, b:LatexExpr) -> 'Indicator':
@@ -156,4 +156,38 @@ class Indicator(LatexExpr):
 
         # Use integer checking along a comparison
         natural_cond = Indicator.is_non_negative(a) if include_zero else Indicator.bigger_than(a, LatexExpr(0))
-        return Indicator.logical_and(Indicator.is_integer(a), Indicator. natural_cond)
+        return Indicator.logical_and(Indicator.is_integer(a), natural_cond)
+
+    @staticmethod
+    def divides(a:LatexExpr, b:LatexExpr) -> 'Indicator':
+        """
+            Indicates if a divides b, assuming it is not zero.
+        """
+
+        # Use the integer indicator
+        return Indicator.is_integer(LatexExpr(r'\frac{' + str(b) + '}{' + str(a) + '}'))
+
+    @staticmethod
+    def does_not_divide(a:LatexExpr, b:LatexExpr) -> 'Indicator':
+        """
+            Indicates if a doesn't divide a, assuming it is not zero.
+        """
+
+        # Negate the division indicator
+        return Indicator.logical_not(Indicator.divides(a, b))
+
+    @staticmethod
+    def is_prime(a:LatexExpr, index_letter:str='i') -> 'Indicator':
+        """
+            Indicates if the given number is prime.
+        """
+
+        # Validations
+        assert len(index_letter) == 1, Exception(f'Invalid index letter "{index_letter}"')
+        assert index_letter.islower(), Exception(f'Invalid index letter "{index_letter}"')
+
+        # Loop through all numbers between 2 and (a-1) and check if any of them divide our candidate
+        prod_expr = LatexExpr(r'\prod_{' + index_letter + '=2}^{' + f'{a}-1' + '}\left(' + str(Indicator.does_not_divide(LatexExpr(index_letter), a))  +  r'\right)')
+        return Indicator.is_natural(prod_expr, include_zero=False)
+
+print(Indicator.is_prime(LatexExpr('n')))
