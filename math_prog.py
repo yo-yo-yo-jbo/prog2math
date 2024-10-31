@@ -37,6 +37,7 @@ class Indicator(LatexExpr):
     def __init__(self, expression:str):
         """
             Creates an instance.
+            Since there is no true way of enforcing expression argument would be a true indicator (i.e. yields either 0 or 1 exclusively) - it is simply an assumption.
         """
 
         # Call super
@@ -100,7 +101,7 @@ class Indicator(LatexExpr):
         """
 
         # Check equality of the expression and its absolute value
-        abs_val_expr = LatexExpr(r'\sqrt{' + f'{a}^2' + r'}')
+        abs_val_expr = LatexExpr(r'\sqrt{' + fr'\left({a}\right)^2' + r'}')
         return Indicator.are_equal(abs_val_expr, a)
 
     @staticmethod
@@ -188,6 +189,15 @@ class Indicator(LatexExpr):
 
         # Loop through all numbers between 2 and (a-1) and check if any of them divide our candidate
         prod_expr = LatexExpr(r'\prod_{' + index_letter + '=2}^{' + f'{a}-1' + '}\left(' + str(Indicator.does_not_divide(LatexExpr(index_letter), a))  +  r'\right)')
-        return Indicator.is_natural(prod_expr, include_zero=False)
+        return Indicator.logical_and(Indicator.is_natural(a), Indicator.is_natural(prod_expr, include_zero=False))
 
-print(Indicator.is_prime(LatexExpr('n')))
+    @staticmethod
+    def count_in_range(lo:LatexExpr, hi:LatexExpr, indicator:'Indicator', index_letter:str='k') -> LatexExpr:
+        """
+            Creates an expression of how many numbers in the integer range indicate true.
+        """
+
+        # Return as a sum
+        return LatexExpr(r'\sum_{' + f'{index_letter}={lo}' + '}^{' + str(hi) + r'}\left(' + str(indicator) + r'\right)')
+
+print(Indicator.count_in_range(LatexExpr(1), LatexExpr(10), Indicator.is_prime(LatexExpr('n'))))
