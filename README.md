@@ -6,7 +6,11 @@ This blogpost is heavily inspired by [Willan's formula](https://mathworld.wolfra
 If scary math equations scare you, you are not alone - together I hope we get to build-up some sort of "programming building blocks" that would help us undertake this task.
 
 ## Conditions
-Our goal is using indicators, i.e. functions that yield `0` when a condition doesn't apply and `1` where is does.  
+For conditions, our goal is using `Indicators`. An `indicator` is a function that gets a single input and outputs either `0` or `1` - *indicating* whether some conditions is true for the number. That is very helpful as `0` and `1` have special roles in mathematics:
+- Adding `0` to any sum does not change it.
+- Multiplying by `0` makes the entire product `0`.
+- Adding `1` helps us count - if we added the number `1` five times to itself - we get a `5`.
+- Multiplying by `1` des not change the product.
 
 ### Logical conditions
 - `Logical not` (negation) is easy - assuming our input is also an indicator, we apply $1-f\left(x\right)$, which will turn a `0` into a `1` and vice-versa.
