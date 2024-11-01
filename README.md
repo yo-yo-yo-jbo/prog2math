@@ -13,7 +13,7 @@ For conditions, our goal is using `Indicators`. An `indicator` is a function tha
 - Multiplying by `1` des not change the product.
 
 ### Logical conditions
-- `Logical not` (negation) is easy - assuming our input is also an indicator, we apply $1-f\left(x\right)$, which will turn a `0` into a `1` and vice-versa.
+- `Logical not` (negation) is easy - assuming our input is also an indicator ($I\left(x\right)$), we apply $1-I\left(x\right)$, which will turn a `0` into a `1` and vice-versa.
 - `Logical and` conditions are also easy, as we are working with indicators, we simply multiply conditions: `a and b` is really $ab$ - as it only takes one of the inputs to be `0` in order for the entire result to be `0`.
 - `Logical or` is a bit more complicated, we could address it in several ways. One approach is adding all terms and test if the result is positive - we could implement that (see later about `non-negativity`), but at this point, since we have `and` and `not`, we could apply [The Morgan's laws](https://en.wikipedia.org/wiki/De_Morgan's_laws): `a or b` is equivalent to `not((not a) and (not b))`, which simply turns into this: `a or b` is $1-\left(1-a\right)\left(1-b\right)$. To convince yourself this is true - feel free to assign all `0` and `1` combinations (there are only 4 such combinations) and see how the result yields the logical result of an `or` condition.
 
@@ -44,3 +44,11 @@ However, there are some cool mathematical tricks we could use for our benefit.
 - The easiest (yet very inefficient) primality test relies on [Wilson's theorem](https://en.wikipedia.org/wiki/Wilson%27s_theorem), in essence, `n` is prime if `n > 1` and $\frac{\left(n-1\right)!+1}{n}$ is an integer.
 - One more idea would just be iterating all numbers between `2` and `n-1` and performing divisibility tests on all of them, which can be done with summation of $\sum_{k=2}^{n-1}$.
 - Lastly, instead of a summation we could use the multiplication of $\prod_{k=2}^{n-1}$ and making sure none of them divide `n`.
+
+## Loops
+Loops are an essential part of programming, and do not exist in "traditional" math formulae as simply as they appear in programming.  
+However, we could still use sums and products to "iterate" through a loop.
+
+### Counting indicators
+- This is where our indicators really pay off - given an indicator $I\left(n\right)$ we simply sum them: $\sum_{k=1}^{10}\left($\left(k\right)\right)$.
+
