@@ -14,7 +14,7 @@ For conditions, our goal is using `Indicators`. An `indicator` is a function tha
 
 ### Logical conditions
 - `Logical not` (negation) is easy - assuming our input is also an indicator, we apply $1-f\left(x\right)$, which will turn a `0` into a `1` and vice-versa.
-- `Logical and` conditions are also easy, as we are working with indicators, we simply multiply conditions: `a and b` is really $ab$.
+- `Logical and` conditions are also easy, as we are working with indicators, we simply multiply conditions: `a and b` is really $ab$ - as it only takes one of the inputs to be `0` in order for the entire result to be `0`.
 - `Logical or` is a bit more complicated, we could address it in several ways. One approach is adding all terms and test if the result is positive - we could implement that (see later about `non-negativity`), but at this point, since we have `and` and `not`, we could apply [The Morgan's laws](https://en.wikipedia.org/wiki/De_Morgan's_laws): `a or b` is equivalent to `not((not a) and (not b))`, which simply turns into this: `a or b` is $1-\left(1-a\right)\left(1-b\right)$.
 
 ### Inequality and equality
