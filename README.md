@@ -49,6 +49,6 @@ However, there are some cool mathematical tricks we could use for our benefit.
 Loops are an essential part of programming, and do not exist in "traditional" math formulae as simply as they appear in programming.  
 However, we could still use sums and products to "iterate" through a loop.
 
-### Counting indicators
+### Counting and all
 - This is where our indicators really pay off - given an indicator `I` we simply sum them. For example, to count how many numbers yield `1` from the indicator `I` in the range of integers between `1` and `10`, we yield: $\sum_{k=1}^{10}\left(I\left(k\right)\right)$.
-
+- To ensure all numbers in a range yield `1` for the given indicator `I`, we can multiply them all: $\prod_{k=1}^{10}\left(I\left(k\right)\right)$.
