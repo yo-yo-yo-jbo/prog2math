@@ -45,6 +45,9 @@ However, there are some cool mathematical tricks we could use for our benefit.
 - One more idea would just be iterating all numbers between `2` and `n-1` and performing divisibility tests on all of them, which can be done with summation of $\sum_{k=2}^{n-1}$.
 - Lastly, instead of a summation we could use the multiplication of $\prod_{k=2}^{n-1}$ and making sure none of them divide `n`.
 
+### Getting a number's digits
+- We could use the floor function to get the decimal digits of a number after the decimal point: $\left\lfloor10^n x\right\rfloor - 10\left\lfloor10^{n-1} x\right\rfloor$.
+
 ## Loops
 Loops are an essential part of programming, and do not exist in "traditional" math formulae as simply as they appear in programming.  
 However, we could still use sums and products to "iterate" through a loop.
