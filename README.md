@@ -1,4 +1,9 @@
-# Notes about programming with math
+# The relation between programming and mathematics
+Some say you must know math to truly know programming, while others claim that's false.  
+In the modern world, many mathematicians also have to know how to code (e.g. using [Sage](https://www.sagemath.org)) to test hypothesis or avoid doing a lot of manual work.  
+One thing that I found surprising is a deep connection between mathematics and programming, in a sense that a math formula is essentially a deterministic algorithm - given some input - get an output.  
+This blogpost is heavily inspired by [Willan's formula](https://mathworld.wolfram.com/WillansFormula.html).  
+If scary math equations scare you, you are not alone - together I hope we get to build-up some sort of "programming building blocks" that would help us undertake this task.
 
 ## Conditions
 Our goal is using indicators, i.e. functions that yield `0` when a condition doesn't apply and `1` where is does.  
