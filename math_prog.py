@@ -201,6 +201,15 @@ class Indicator(LatexExpr):
         return Indicator.logical_and(Indicator.less_than(1, a), Indicator.is_integer(LatexExpr(r'\frac{\left(' + str(a) + r'-1\right)!+1}{' + str(a) + '}')))
 
     @staticmethod
+    def get_post_decimal_point_digit(a:LatexExpr, b:LatexExpr) -> LatexExpr:
+        """
+            Gets the b-th digit of the expression "a" after the decimal point.
+        """
+
+        # Use the floor function
+        return LocalExpr(r'\left\lfloor10^' + f'{b} {a}' + r'\right\rfloor - 10\left\lfloor10^{' + str(b) + '-1} ' + str(a) + r'\right\rfloor')
+
+    @staticmethod
     def all_in_range(lo:LatexExpr, hi:LatexExpr, indicator:'Indicator', index_letter:str='k') -> 'Indicator':
         """
             Indicates if all integers in the given range yield true for the given indicator.
