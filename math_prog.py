@@ -201,6 +201,15 @@ class Indicator(LatexExpr):
         return Indicator.logical_and(Indicator.less_than(1, a), Indicator.is_integer(LatexExpr(r'\frac{\left(' + str(a) + r'-1\right)!+1}{' + str(a) + '}')))
 
     @staticmethod
+    def all_in_range(lo:LatexExpr, hi:LatexExpr, indicator:'Indicator', index_letter:str='k') -> 'Indicator':
+        """
+            Indicates if all integers in the given range yield true for the given indicator.
+        """
+
+        # Return as a product
+        return Indicator(r'\sum_{' + f'{index_letter}={lo}' + '}^{' + str(hi) + r'}\left(' + str(indicator) + r'\right)')
+    
+    @staticmethod
     def count_in_range(lo:LatexExpr, hi:LatexExpr, indicator:'Indicator', index_letter:str='k') -> LatexExpr:
         """
             Creates an expression of how many numbers in the integer range indicate true.
