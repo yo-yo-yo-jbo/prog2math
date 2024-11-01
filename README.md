@@ -35,4 +35,4 @@ However, there are some cool mathematical tricks we could use for our benefit.
 - The easiest (yet very inefficient) primality test relies on [Wilson's theorem](https://en.wikipedia.org/wiki/Wilson%27s_theorem), in essence, `n` is prime if `n > 1` and $\frac{\left(n-1\right)!+1}{n}$ is an integer.
 - One more idea would just be iterating all numbers between `2` and `n-1` and performing divisibility tests on all of them, which can be done with summation of $\sum_{k=2}^{n-1}$.
 - Lastly, instead of summation we could use multiplication of $\prod_{k=2}^{n-1}$ and making sure none of them divide `n`.
-- In my code I used the last option (multiplying all divisibility indicators in the range and negating the result).
+- In my code I used the both options.
