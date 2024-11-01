@@ -38,10 +38,9 @@ Obviously the "usual" operations of addition, substruction, multipication, divis
 However, there are some cool mathematical tricks we could use for our benefit.
 
 ### Divisibility test
-- We can check if `a` divides `b` by checking if `a` is non-zero and $\frac{b}{a}$ is an integer.
+- Assuming `a` is not `0`, we can check if `a` divides `b` by testing if $\frac{b}{a}$ is an integer.
 
 ### Primality test
 - The easiest (yet very inefficient) primality test relies on [Wilson's theorem](https://en.wikipedia.org/wiki/Wilson%27s_theorem), in essence, `n` is prime if `n > 1` and $\frac{\left(n-1\right)!+1}{n}$ is an integer.
 - One more idea would just be iterating all numbers between `2` and `n-1` and performing divisibility tests on all of them, which can be done with summation of $\sum_{k=2}^{n-1}$.
-- Lastly, instead of summation we could use multiplication of $\prod_{k=2}^{n-1}$ and making sure none of them divide `n`.
-- In my code I used the both options.
+- Lastly, instead of a summation we could use the multiplication of $\prod_{k=2}^{n-1}$ and making sure none of them divide `n`.
