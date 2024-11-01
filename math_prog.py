@@ -197,8 +197,8 @@ class Indicator(LatexExpr):
             Indicates if the given number is prime by means of Wilson's theorem.
         """
 
-        # Use Wilson's theorem with integer testing
-        return Indicator.is_integer(LatexExpr(r'\frac{\left(' + str(a) + r'-1\right)!+1}{' + str(a) + '}'))
+        # Use Wilson's theorem with integer testing alongside making sure our candidate is strictly greater than one
+        return Indicator.logical_and(Indicator.less_than(1, a), Indicator.is_integer(LatexExpr(r'\frac{\left(' + str(a) + r'-1\right)!+1}{' + str(a) + '}')))
 
     @staticmethod
     def count_in_range(lo:LatexExpr, hi:LatexExpr, indicator:'Indicator', index_letter:str='k') -> LatexExpr:
