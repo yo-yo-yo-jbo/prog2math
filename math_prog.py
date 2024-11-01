@@ -178,9 +178,9 @@ class Indicator(LatexExpr):
         return Indicator.logical_not(Indicator.divides(a, b))
 
     @staticmethod
-    def is_prime(a:LatexExpr, index_letter:str='i') -> 'Indicator':
+    def is_prime_divisors(a:LatexExpr, index_letter:str='i') -> 'Indicator':
         """
-            Indicates if the given number is prime.
+            Indicates if the given number is prime by means of iterating its divisors.
         """
 
         # Validations
@@ -192,6 +192,15 @@ class Indicator(LatexExpr):
         return Indicator.logical_and(Indicator.is_natural(a), Indicator.is_natural(prod_expr, include_zero=False))
 
     @staticmethod
+    def is_prime_wilson(a:LatexExpr) -> 'Indicator':
+        """
+            Indicates if the given number is prime by means of Wilson's theorem.
+        """
+
+        # Use Wilson's theorem with integer testing
+        return Indicator.is_integer(LatexExpr(r'\frac{\left(' + str(a) + r'-1\right)!+1}{' + str(a) + '}'))
+
+    @staticmethod
     def count_in_range(lo:LatexExpr, hi:LatexExpr, indicator:'Indicator', index_letter:str='k') -> LatexExpr:
         """
             Creates an expression of how many numbers in the integer range indicate true.
@@ -200,4 +209,4 @@ class Indicator(LatexExpr):
         # Return as a sum
         return LatexExpr(r'\sum_{' + f'{index_letter}={lo}' + '}^{' + str(hi) + r'}\left(' + str(indicator) + r'\right)')
 
-print(Indicator.count_in_range(LatexExpr(1), LatexExpr(10), Indicator.is_prime(LatexExpr('n'))))
+print(Indicator.count_in_range(LatexExpr(1), LatexExpr(10), Indicator.is_prime_wilson(LatexExpr('n'))))
