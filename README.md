@@ -56,3 +56,4 @@ However, we could still use sums and products to "iterate" through a loop.
 ### Counting and checks for all indicators
 - This is where our indicators really pay off - given an indicator `I` we simply sum them. For example, to count how many numbers yield `1` from the indicator `I` in the range of integers between `1` and `10`, we yield: $\sum_{k=1}^{10}\left(I\left(k\right)\right)$.
 - To ensure all numbers in a range yield `1` for the given indicator `I`, we can multiply them all: $\prod_{k=1}^{10}\left(I\left(k\right)\right)$.
+- Given an indicator, we can now check if at least `n` elements yield true. This was originally done by Willans by using the function $\left\lfloor\sqrt[n]{\frac{n}{k}}\right\rfloor$ which yields `1` if and only if `n >= k`. However, we already have the comparison for `>=` so we can use either.
