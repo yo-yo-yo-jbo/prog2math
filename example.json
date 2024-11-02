@@ -1,0 +1,12 @@
+{
+  "count_in_range": {
+    "lo": 1,
+    "hi": 10,
+    "indicator": {
+      "is_prime_wilson": {
+        "a": "n"
+      }
+    }
+  }
+}
+

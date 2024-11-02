@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+import json
+import argparse
+import sys
+import inspect
 from typing import Union
 
 class LatexExpr(object):
@@ -177,6 +182,14 @@ class Indicator(LatexExpr):
         # Negate the division indicator
         return Indicator.logical_not(Indicator.divides(a, b))
 
+    def get_mod(a:LatexExpr, b:LatexExpr) -> LatexExpr:
+        """
+            Calculates a % b, which is a (mod b), assuming b is not 0.
+        """
+
+        # Use the floor function
+        return fr'{a} - {b}\left\lfloor\frac' + '{' + str(a) + '}{' + str(b) + r'}\right\rfloor'
+
     @staticmethod
     def is_prime_divisors(a:LatexExpr, index_letter:str='i') -> 'Indicator':
         """
@@ -227,4 +240,174 @@ class Indicator(LatexExpr):
         # Return as a sum
         return LatexExpr(r'\sum_{' + f'{index_letter}={lo}' + '}^{' + str(hi) + r'}\left(' + str(indicator) + r'\right)')
 
-print(Indicator.count_in_range(LatexExpr(1), LatexExpr(10), Indicator.is_prime_wilson(LatexExpr('n'))))
+class LoadingUtils(object):
+    """
+        Loading utilities.
+    """
+
+    # Cache that maps method names to class methods
+    _METHOD_NAMES_MAPPING = None
+
+    # Maps class names to classes
+    _CLASS_NAMES_MAPPING = None
+
+    @classmethod
+    def _add_to_cache(cls, method_name:str, method_obj:object) -> None:
+        """
+            Adds the given method name to the cache.
+        """
+
+        # Validate uniqueness and add
+        assert method_name not in cls._METHOD_NAMES_MAPPING, Exception(f'Method "{method_name}" is not unique')
+        cls._METHOD_NAMES_MAPPING[method_name] = method_obj
+
+    @classmethod
+    def _build_cache(cls) -> None:
+        """
+            Builds the cache that maps method names and class names to methods and classes.
+        """
+
+        # Empty caches
+        cls._METHOD_NAMES_MAPPING = {}
+        cls._CLASS_NAMES_MAPPING = {}
+        
+        # Get all members in the module
+        for class_name, class_obj in inspect.getmembers(sys.modules[__name__], predicate=inspect.isclass):
+
+            # Only take subclasses of LatexExpr
+            if not issubclass(class_obj, LatexExpr):
+                continue
+
+            # Map the class name to the object
+            assert class_name not in cls._CLASS_NAMES_MAPPING, Exception(f'Class "{class_name}" is not unique')
+            cls._CLASS_NAMES_MAPPING[class_name] = class_obj
+
+            # Get all functions
+            for func_name, func_obj in inspect.getmembers(class_obj, predicate=inspect.isfunction):
+
+                # Skip abstract
+                if inspect.isabstract(func_obj):
+                    continue
+
+                # Handle constructors
+                if func_name == '__init__':
+                    cls._add_to_cache(class_name, func_obj)
+                    continue
+
+                # Skip private or protected ones
+                if func_name.startswith('_'):
+                    continue
+
+                # Skip instance methods
+                if 'self' in inspect.signature(func_obj).parameters:
+                    continue
+
+                # Add to cache
+                cls._add_to_cache(func_name, func_obj)
+                continue
+
+    @classmethod
+    def _get_class_from_name(cls, class_name:str, throw_if_not_found:bool=True) -> object:
+        """
+            Gets a class from its name.
+        """
+
+        # Fill the cache if necessary
+        if cls._CLASS_NAMES_MAPPING is None:
+            cls._build_cache()
+
+        # Get the result from the mapping
+        result = cls._CLASS_NAMES_MAPPING.get(class_name, None)
+        if throw_if_not_found:
+            assert result is not None, Exception(f'Class "{class_name}" not found')
+        return result
+
+    @classmethod
+    def _get_method_from_name(cls, method_name:str, throw_if_not_found:bool=True) -> object:
+        """
+            Gets a method from its name.
+        """
+
+        # Fill the cache if necessary
+        if cls._METHOD_NAMES_MAPPING is None:
+            cls._build_cache()
+
+        # Get the result from the mapping
+        result = cls._METHOD_NAMES_MAPPING.get(method_name, None)
+        if throw_if_not_found:
+            assert result is not None, Exception(f'Method "{method_name}" not found')
+        return result
+
+    @classmethod
+    def create_expr_by_reflection(cls, expr_method_name:str, expr_method_args:dict[str, object]) -> LatexExpr:
+        """
+            Creates an expression instance by the means of reflection.
+        """
+
+        # Get the method object
+        method = cls._get_method_from_name(expr_method_name)
+        
+        # Build keyword arguments
+        kwds = {}
+        for arg_name, arg_val in expr_method_args.items():
+
+            # Validate argument exists
+            assert arg_name in inspect.signature(method).parameters, Exception(f'Argument "{arg_name}" not found for method "{expr_method_name}"')
+
+            # Resolve annotation
+            annotation = None
+            if isinstance(inspect.signature(method).parameters[arg_name].annotation, str):
+                annotation = cls._get_class_from_name(inspect.signature(method).parameters[arg_name].annotation, throw_if_not_found=False)
+            elif issubclass(inspect.signature(method).parameters[arg_name].annotation, LatexExpr):
+                annotation = inspect.signature(method).parameters[arg_name].annotation
+
+            # Handle recursive types
+            if annotation is not None:
+                # Strings or numbers can be instanciated
+                if isinstance(arg_val, float) or isinstance(arg_val, int) or isinstance(arg_val, str):
+                    kwds[arg_name] = LatexExpr(arg_val)
+                    continue
+
+                # Handle compound types recursively
+                assert isinstance(arg_val, dict), Exception(f'Argument "{arg_name}" for method "{expr_method_name}" must be a compound type')
+                assert len(arg_val) == 1, Exception(f'Argument "{arg_name}" for method "{expr_method_name}" must have a single entry')
+                key = list(arg_val.keys())[0]
+                kwds[arg_name] = LoadingUtils.create_expr_by_reflection(key, arg_val[key])
+                
+            # Handle simple types
+            kwds[arg_name] = arg_val
+
+        # Run the method
+        return method(**kwds)
+
+def main() -> None:
+    """
+        Main routine.
+    """
+
+    # Parse arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-j', '--jsonfile', dest='json_file', type=str, help='The input JSON file path.', required=True)
+    parser.add_argument('-o', '--output', dest='output_file', type=str, default='-', help='The output path, or "-" for stdout.')
+    args = parser.parse_args()
+
+    # Open the JSON file
+    with open(args.json_file, 'r') as fp:
+        input_dict = json.load(fp)
+
+    # Validate input dictionary has one element and create that expression
+    assert len(input_dict) == 1, Exception(f'Input JSON "{args.json_file}" must have a single entry')
+    key = list(input_dict.keys())[0]
+    expr = LoadingUtils.create_expr_by_reflection(key, input_dict[key])
+
+    # Write expression
+    if args.output_file == '-':
+        print(str(expr))
+    else:
+        with open(args.output_file, 'w') as fp:
+            fp.write(str(expr))
+
+
+if __name__ == '__main__':
+    main()
+
