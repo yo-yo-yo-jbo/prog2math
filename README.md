@@ -48,10 +48,10 @@ However, there are some cool mathematical tricks we could use for our benefit.
 ### Getting a number's digits
 - We could use the floor function to get the decimal digits of a number after the decimal point: $\left\lfloor10^n x\right\rfloor - 10\left\lfloor10^{n-1} x\right\rfloor$.
 
-## Loops
+## Loops and ranges
 Loops are an essential part of programming, and do not exist in "traditional" math formulae as simply as they appear in programming.  
 However, we could still use sums and products to "iterate" through a loop.
 
-### Counting and all
+### Counting and checks for all indicators
 - This is where our indicators really pay off - given an indicator `I` we simply sum them. For example, to count how many numbers yield `1` from the indicator `I` in the range of integers between `1` and `10`, we yield: $\sum_{k=1}^{10}\left(I\left(k\right)\right)$.
 - To ensure all numbers in a range yield `1` for the given indicator `I`, we can multiply them all: $\prod_{k=1}^{10}\left(I\left(k\right)\right)$.
