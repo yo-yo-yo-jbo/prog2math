@@ -37,8 +37,9 @@ This gives us a number between 0 and 1, where `0` is only yielded for the input 
 Obviously the "usual" operations of addition, substruction, multipication, division, square roots and powers are free.  
 However, there are some cool mathematical tricks we could use for our benefit.
 
-### Divisibility test
+### Divisibility
 - Assuming `a` is not `0`, we can check if `a` divides `b` by testing if $\frac{b}{a}$ is an integer.
+- To get `a % b` (the remainder) we could use the floor function: $a - b\left\lfloor\frac{a}{b}\right\rfloor$.
 
 ### Primality test
 - The easiest (yet very inefficient) primality test relies on [Wilson's theorem](https://en.wikipedia.org/wiki/Wilson%27s_theorem), in essence, `n` is prime if `n > 1` and $\frac{\left(n-1\right)!+1}{n}$ is an integer.
