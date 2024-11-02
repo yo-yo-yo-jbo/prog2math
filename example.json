@@ -1,10 +1,11 @@
 {
-  "count_in_range": {
+  "is_range_at_least_exp": {
     "lo": 1,
     "hi": 10,
+    "n": "n",
     "indicator": {
       "is_prime_wilson": {
-        "a": "n"
+        "a": "k"
       }
     }
   }

@@ -152,7 +152,7 @@ class Indicator(LatexExpr):
         """
 
         # Use the cosine function's period
-        return Indicator(fr'\left\lfloor\cos^2\left(\pi {a}\right)\right\rfloor')
+        return Indicator(fr'\left\lfloor\left(\cos\left(\pi {a}\right)\right)^2\right\rfloor')
 
     @staticmethod
     def is_natural(a:LatexExpr, include_zero:bool=False) -> 'Indicator':
