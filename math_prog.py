@@ -240,6 +240,15 @@ class Indicator(LatexExpr):
         # Return as a sum
         return LatexExpr(r'\sum_{' + f'{index_letter}={lo}' + '}^{' + str(hi) + r'}\left(' + str(indicator) + r'\right)')
 
+    @staticmethod
+    def is_range_at_least_exp(lo:LatexExpr, hi:LatexExpr, n:LatexExpr, indicator:'Indicator', index_letter:str='k') -> 'Indicator':
+        """
+            Uses exponentiation to indicate whether the given range has at least n elements that yield true.
+        """
+
+        # Yield
+        return r'\left\lfloor\sqrt[{n}]{\frac{' + str(n) + '}{' + str(Indicator.count_in_range(lo, hi, indicator, index_letter)) + r'}}\right\rfloor'
+
 class LoadingUtils(object):
     """
         Loading utilities.
@@ -363,6 +372,7 @@ class LoadingUtils(object):
 
             # Handle recursive types
             if annotation is not None:
+
                 # Strings or numbers can be instanciated
                 if isinstance(arg_val, float) or isinstance(arg_val, int) or isinstance(arg_val, str):
                     kwds[arg_name] = LatexExpr(arg_val)
@@ -372,9 +382,12 @@ class LoadingUtils(object):
                 assert isinstance(arg_val, dict), Exception(f'Argument "{arg_name}" for method "{expr_method_name}" must be a compound type')
                 assert len(arg_val) == 1, Exception(f'Argument "{arg_name}" for method "{expr_method_name}" must have a single entry')
                 key = list(arg_val.keys())[0]
+                assert arg_name not in kwds, Exception(f'Argument "{arg_name}" for method "{expr_method_name}" is not unique')
                 kwds[arg_name] = LoadingUtils.create_expr_by_reflection(key, arg_val[key])
+                continue
                 
             # Handle simple types
+            assert arg_name not in kwds, Exception(f'Argument "{arg_name}" for method "{expr_method_name}" is not unique')
             kwds[arg_name] = arg_val
 
         # Run the method
