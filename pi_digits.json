@@ -1,0 +1,13 @@
+{
+  "compose":
+  {
+    "a": "f\\left(n\\right)=",
+    "b": {
+      "get_post_decimal_point_digit": {
+        "a": "\\pi",
+        "b": "n"
+      }
+    }
+  }
+}
+

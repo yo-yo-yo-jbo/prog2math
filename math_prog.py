@@ -229,7 +229,7 @@ class Indicator(LatexExpr):
         """
 
         # Use the floor function
-        return LocalExpr(r'\left\lfloor10^' + f'{b} {a}' + r'\right\rfloor - 10\left\lfloor10^{' + str(b) + '-1} ' + str(a) + r'\right\rfloor')
+        return LatexExpr(r'\left\lfloor10^' + f'{b} {a}' + r'\right\rfloor - 10\left\lfloor10^{' + str(b) + '-1} ' + str(a) + r'\right\rfloor')
 
     @staticmethod
     def all_in_range(lo:LatexExpr, hi:LatexExpr, indicator:'Indicator', index_letter:str='k') -> 'Indicator':
@@ -431,7 +431,6 @@ def main() -> None:
     else:
         with open(args.output_file, 'w') as fp:
             fp.write(str(expr))
-
 
 if __name__ == '__main__':
     main()
