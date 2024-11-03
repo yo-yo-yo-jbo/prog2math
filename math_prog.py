@@ -34,6 +34,21 @@ class LatexExpr(object):
         # Return the expression
         return self.get_expression()
 
+    @staticmethod
+    def compose(*expressions:list['LatexExpr']) -> 'LatexExpr':
+        """
+            Composes expressions.
+        """
+    
+        # Validations
+        assert len(expressions) > 0, Exception('Must provide at least one expression')
+    
+        # Create the expression
+        whole_expr = ''
+        for expr in expressions[::-1]:
+            whole_expr = fr'{str(expr)}\left({whole_expr}\right)' if len(whole_expr) > 0 else str(expr)
+        return LatexExpr(whole_expr)
+
 class Indicator(LatexExpr):
     """
         An indicator of a condition, should yield 0 or 1 only.
@@ -267,7 +282,10 @@ class LoadingUtils(object):
         """
 
         # Validate uniqueness and add
-        assert method_name not in cls._METHOD_NAMES_MAPPING, Exception(f'Method "{method_name}" is not unique')
+        prev_method_obj = cls._METHOD_NAMES_MAPPING.get(method_name, None)
+        if prev_method_obj == method_obj:
+            return
+        assert prev_method_obj is None, Exception(f'Method "{method_name}" is not unique')
         cls._METHOD_NAMES_MAPPING[method_name] = method_obj
 
     @classmethod

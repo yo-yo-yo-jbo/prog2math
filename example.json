@@ -1,11 +1,12 @@
 {
   "is_range_at_least_exp": {
     "lo": 1,
-    "hi": 10,
+    "hi": "i",
     "n": "n",
+    "index_letter": "j",
     "indicator": {
       "is_prime_wilson": {
-        "a": "k"
+        "a": "j"
       }
     }
   }
