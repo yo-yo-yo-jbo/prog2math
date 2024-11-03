@@ -10,7 +10,7 @@ class LatexExpr(object):
         Latex expression.
     """
 
-    def __init__(self, expression:Union[str, float]):
+    def __init__(self, expression:Union[str, float, int]):
         """
             Creates an instance.
         """
@@ -35,19 +35,13 @@ class LatexExpr(object):
         return self.get_expression()
 
     @staticmethod
-    def compose(*expressions:list['LatexExpr']) -> 'LatexExpr':
+    def compose(a:'LatexExpr', b:'LatexExpr') -> 'LatexExpr':
         """
             Composes expressions.
         """
     
-        # Validations
-        assert len(expressions) > 0, Exception('Must provide at least one expression')
-    
         # Create the expression
-        whole_expr = ''
-        for expr in expressions[::-1]:
-            whole_expr = fr'{str(expr)}\left({whole_expr}\right)' if len(whole_expr) > 0 else str(expr)
-        return LatexExpr(whole_expr)
+        return fr'{a}\left({b}\right)'
 
 class Indicator(LatexExpr):
     """
@@ -403,7 +397,7 @@ class LoadingUtils(object):
                 assert arg_name not in kwds, Exception(f'Argument "{arg_name}" for method "{expr_method_name}" is not unique')
                 kwds[arg_name] = LoadingUtils.create_expr_by_reflection(key, arg_val[key])
                 continue
-                
+            
             # Handle simple types
             assert arg_name not in kwds, Exception(f'Argument "{arg_name}" for method "{expr_method_name}" is not unique')
             kwds[arg_name] = arg_val

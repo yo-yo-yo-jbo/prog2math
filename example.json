@@ -1,12 +1,18 @@
 {
-  "is_range_at_least_exp": {
-    "lo": 1,
-    "hi": "i",
-    "n": "n",
-    "index_letter": "j",
-    "indicator": {
-      "is_prime_wilson": {
-        "a": "j"
+  "compose":
+  {
+    "a": "f\\left(n\\right)=\\sum_{i=1}^{2^n}",
+    "b": {
+      "is_range_at_least_exp": {
+        "lo": 1,
+        "hi": "i",
+        "n": "n",
+        "index_letter": "j",
+        "indicator": {
+          "is_prime_divisors": {
+            "a": "j"
+          }
+        }
       }
     }
   }
