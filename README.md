@@ -1,4 +1,7 @@
-# The relation between programming and mathematics
+# The relation between programming and mathematical formulae
+
+![screenshot](screenshot.png)
+
 Some say you must know math to truly know programming, while others claim that's false.  
 In the modern world, many mathematicians also have to know how to code (e.g. using [Sage](https://www.sagemath.org)) to test hypothesis or avoid doing a lot of manual work.  
 One thing that I found surprising is a deep connection between mathematics and programming, in a sense that a math formula is essentially a deterministic algorithm - given some input - get an output.  
