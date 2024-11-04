@@ -17,6 +17,8 @@ Therefore, I try to stick to the following rules:
 3. I avoid infinities (even when it does make sense, e.g. avoid this: $\max_{k\in\mathbb{N^+}}\{\frac{1}{k}\}$.
 4. Formulaes can be highly inefficient in terms of time-complexity, which is acceptible.
 
+With that, let's get started!
+
 ## Conditions
 For conditions, our goal is using `Indicators`. An `indicator` is a function that gets a single input and outputs either `0` or `1` - *indicating* whether some conditions is true for the number. That is very helpful as `0` and `1` have special roles in mathematics:
 - Adding `0` to any sum does not change it.
@@ -69,3 +71,45 @@ However, we could still use sums and products to "iterate" through a loop.
 - This is where our indicators really pay off - given an indicator `I` we simply sum them. For example, to count how many numbers yield `1` from the indicator `I` in the range of integers between `1` and `10`, we yield: $\sum_{k=1}^{10}\left(I\left(k\right)\right)$.
 - To ensure all numbers in a range yield `1` for the given indicator `I`, we can multiply them all: $\prod_{k=1}^{10}\left(I\left(k\right)\right)$.
 - Given an indicator, we can now check if at least `n` elements yield true. This was originally done by Willans by using the function $\left\lfloor\sqrt[n]{\frac{n}{k}}\right\rfloor$ which yields `1` if and only if `n >= k`. However, we already have the comparison for `>=` so we can use either.
+
+## Combining it all together
+I built a Python script that gets a JSON, parses everything there and outputs the formula.  
+Here's an example:
+
+```json
+{
+  "compose":
+  {
+    "a": "f\\left(n\\right)=\\sum_{i=1}^{2^n}",
+    "b": {
+      "is_range_at_least_exp": {
+        "lo": 1,
+        "hi": "i",
+        "n": "n",
+        "index_letter": "j",
+        "indicator": {
+          "is_prime_divisors": {
+            "a": "j"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+I run `./prog2math.py -j examples/prime_gen_divisors.json` I get:
+
+```
+f\left(n\right)=\sum_{i=1}^{2^n}\left(\left\lfloor\sqrt[{n}]{\frac{n}{\sum_{j=1}^{i}\left(\left(\left(\left\lfloor\left(\cos\left(\pi j\right)\right)^2\right\rfloor\right)\left(1-\left(1-\left(\left\lceil\frac{4\arctan^2{\left(\sqrt{\left(0-j\right)^2}-0-j\right)}}{\pi^2}\right\rceil\right)\right)\right)\right)\left(\left(\left\lfloor\left(\cos\left(\pi \prod_{i=2}^{j-1}\left(1-\left(\left\lfloor\left(\cos\left(\pi \frac{j}{i}\right)\right)^2\right\rfloor\right)\right)\right)\right)^2\right\rfloor\right)\left(1-\left(1-\left(\left\lceil\frac{4\arctan^2{\left(\sqrt{\left(0-\prod_{i=2}^{j-1}\left(1-\left(\left\lfloor\left(\cos\left(\pi \frac{j}{i}\right)\right)^2\right\rfloor\right)\right)\right)^2}-0-\prod_{i=2}^{j-1}\left(1-\left(\left\lfloor\left(\cos\left(\pi \frac{j}{i}\right)\right)^2\right\rfloor\right)\right)\right)}}{\pi^2}\right\rceil\right)\right)\right)\right)\right)}}\right\rfloor\right)
+```
+
+We can easily present that - this is my forumula for the `n`-th prime!
+
+$f\left(n\right)=\sum_{i=1}^{2^n}\left(\left\lfloor\sqrt[{n}]{\frac{n}{\sum_{j=1}^{i}\left(\left(\left(\left\lfloor\left(\cos\left(\pi j\right)\right)^2\right\rfloor\right)\left(1-\left(1-\left(\left\lceil\frac{4\arctan^2{\left(\sqrt{\left(0-j\right)^2}-0-j\right)}}{\pi^2}\right\rceil\right)\right)\right)\right)\left(\left(\left\lfloor\left(\cos\left(\pi \prod_{i=2}^{j-1}\left(1-\left(\left\lfloor\left(\cos\left(\pi \frac{j}{i}\right)\right)^2\right\rfloor\right)\right)\right)\right)^2\right\rfloor\right)\left(1-\left(1-\left(\left\lceil\frac{4\arctan^2{\left(\sqrt{\left(0-\prod_{i=2}^{j-1}\left(1-\left(\left\lfloor\left(\cos\left(\pi \frac{j}{i}\right)\right)^2\right\rfloor\right)\right)\right)^2}-0-\prod_{i=2}^{j-1}\left(1-\left(\left\lfloor\left(\cos\left(\pi \frac{j}{i}\right)\right)^2\right\rfloor\right)\right)\right)}}{\pi^2}\right\rceil\right)\right)\right)\right)\right)}}\right\rfloor\right)$
+
+Woah. A bit less elegant than Willan's formula, but works well.  
+I also added some other things to the examples directory, including Willan's formula (slightly changed):
+
+$f\left(n\right)=\sum_{i=1}^{2^n}\left(\left\lfloor\sqrt[{n}]{\frac{n}{\sum_{j=1}^{i}\left(\left(1-\left(1-\left(\left\lceil\frac{4\arctan^2{\left(\sqrt{\left(1-j\right)^2}-1-j\right)}}{\pi^2}\right\rceil\right)\right)\right)\left(\left\lfloor\left(\cos\left(\pi \frac{\left(j-1\right)!+1}{j}\right)\right)^2\right\rfloor\right)\right)}}\right\rfloor\right)$
+
