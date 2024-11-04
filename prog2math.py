@@ -414,30 +414,42 @@ def main() -> None:
         Main routine.
     """
 
-    # Print logo
-    print(LOGO)
-
     # Parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-j', '--jsonfile', dest='json_file', type=str, help='The input JSON file path.', required=True)
-    parser.add_argument('-o', '--output', dest='output_file', type=str, default='-', help='The output path, or "-" for stdout.')
+    parser.add_argument('-q', '--quiet', dest='quiet',action='store_true', help='Quiet mode that does not show logo and other info.')
     args = parser.parse_args()
 
-    # Open the JSON file
-    with open(args.json_file, 'r') as fp:
-        input_dict = json.load(fp)
+    # Print logo
+    if not args.quiet:
+        print(LOGO)
 
-    # Validate input dictionary has one element and create that expression
-    assert len(input_dict) == 1, Exception(f'Input JSON "{args.json_file}" must have a single entry')
-    key = list(input_dict.keys())[0]
-    expr = LoadingUtils.create_expr_by_reflection(key, input_dict[key])
+    # Catch all errors
+    try:
 
-    # Write expression
-    if args.output_file == '-':
+        # Open the JSON file
+        with open(args.json_file, 'r') as fp:
+            input_dict = json.load(fp)
+
+        # Validate input dictionary has one element and create that expression
+        assert len(input_dict) == 1, Exception(f'Input JSON "{args.json_file}" must have a single entry')
+        key = list(input_dict.keys())[0]
+        expr = LoadingUtils.create_expr_by_reflection(key, input_dict[key])
+
+        # Write expression
         print(str(expr))
-    else:
-        with open(args.output_file, 'w') as fp:
-            fp.write(str(expr))
+
+        # Indicate success
+        sys.exit(0)
+
+    except Exception as ex:
+
+        # Print exception unless we are in quiet mode
+        if not args.quiet:
+            print(f'Error: {exception}')
+        
+        # Return -1
+        sys.exit(-1)
 
 if __name__ == '__main__':
     main()
