@@ -113,3 +113,11 @@ I also added some other things to the examples directory, including Willan's for
 
 $f\left(n\right)=\sum_{i=1}^{2^n}\left(\left\lfloor\sqrt[{n}]{\frac{n}{\sum_{j=1}^{i}\left(\left(1-\left(1-\left(\left\lceil\frac{4\arctan^2{\left(\sqrt{\left(1-j\right)^2}-1-j\right)}}{\pi^2}\right\rceil\right)\right)\right)\left(\left\lfloor\left(\cos\left(\pi \frac{\left(j-1\right)!+1}{j}\right)\right)^2\right\rfloor\right)\right)}}\right\rfloor\right)$
 
+## Summary
+I hope this quite odd blogpost was informative.  
+There's more work to be done - e.g. there's no concept of "memory" in formulae - can we come up with such a concept?  
+I'd love to see more cool ideas of generating interesting formulae - feel free to add a pull request :)
+
+Stay tuned!
+
+Jonathan Bar Or
