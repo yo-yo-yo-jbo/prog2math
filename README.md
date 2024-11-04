@@ -1,12 +1,21 @@
-# The relation between programming and mathematical formulae
-
+# Prog2Math - the relation between programming and mathematical formulae
 ![screenshot](screenshot.png)
 
 Some say you must know math to truly know programming, while others claim that's false.  
 In the modern world, many mathematicians also have to know how to code (e.g. using [Sage](https://www.sagemath.org)) to test hypothesis or avoid doing a lot of manual work.  
-One thing that I found surprising is a deep connection between mathematics and programming, in a sense that a math formula is essentially a deterministic algorithm - given some input - get an output.  
-This blogpost is heavily inspired by [Willan's formula](https://mathworld.wolfram.com/WillansFormula.html).  
+One thing that I found surprising is a deep connection between mathematical formulae and programming, in a sense that a math formula is essentially a deterministic algorithm - given some input - get an output.  
+This blogpost is heavily inspired by [Willan's formula](https://mathworld.wolfram.com/WillansFormula.html) but I will show you how I got to alternative formulae for primes, and much more.  
 If scary math equations scare you, you are not alone - together I hope we get to build-up some sort of "programming building blocks" that would help us undertake this task.
+
+## What constitutes a formula?
+That's a tough question - generally mathematical formulae are algorithmic in nature, but some of them might actually be very hard to be useful.  
+For example, $\sum_{k=1}^{\infty}\frac{1}{k^2}$ might look like it has an *infinite* number of steps, but it's really just a fancy way to express $\frac{\pi^2}{6}$.  
+On the other hand, we must be very careful - formulae that have division by zero or infinite sums that do not converge are nonsensical (in most "normal" situations, anyway).  
+Therefore, I try to stick to the following rules:
+1. All formulae that I consider must avoid doing anything nonsensical (such as division by zero and others).
+2. I use LaTeX type of formulae, which is easy to turn into human-readable text.
+3. I avoid infinities (even when it does make sense, e.g. avoid this: $\max_{k\in\mathbb{N^+}}\{\frac{1}{k}\}$.
+4. Formulaes can be highly inefficient in terms of time-complexity, which is acceptible.
 
 ## Conditions
 For conditions, our goal is using `Indicators`. An `indicator` is a function that gets a single input and outputs either `0` or `1` - *indicating* whether some conditions is true for the number. That is very helpful as `0` and `1` have special roles in mathematics:
